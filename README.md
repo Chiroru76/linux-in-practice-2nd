@@ -12,3 +12,36 @@ $ sudo adduser `id -un` libvirt
 $ sudo adduser `id -un` libvirt-qemu
 $ sudo adduser `id -un` kvm
 ```
+
+# Docker を使った実行環境の作成
+
+## イメージのビルド（初回のみ）
+
+プロジェクトのルートディレクトリで実行：
+
+```console
+$ docker build -t linux-in-practice .
+```
+
+## コンテナの起動
+
+```console
+$ docker run -it --rm \
+  -v $(pwd):/work \
+  -w /work \
+  linux-in-practice bash
+```
+
+各オプションの意味：
+
+| オプション | 意味 |
+|-----------|------|
+| `-it` | 対話的に操作できるようにする（ターミナルを接続する） |
+| `--rm` | コンテナ終了時に自動削除する |
+| `-v $(pwd):/work` | Mac の現在ディレクトリをコンテナ内の `/work` にマウントする |
+| `-w /work` | コンテナ内の作業ディレクトリを `/work` に設定する |
+| `linux-in-practice` | 使用するイメージ名 |
+| `bash` | コンテナ内で bash を起動する |
+
+- Mac 側でソースコードを編集し、コンテナ内でビルド・実行できます
+- `-v $(pwd):/work` により Mac 側のファイルとコンテナ内の `/work` が同期されます
